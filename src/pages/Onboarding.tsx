@@ -3,21 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Heart, Brain, Users } from "lucide-react";
+import { ChevronRight, Heart, Brain, Users, Calendar, MessageSquare } from "lucide-react";
 import heroImage from "@/assets/hero-fitness.jpg";
+import logo from "@/assets/cgfit-logo.png";
 
-type OnboardingStep = "welcome" | "physical" | "mental" | "social" | "programs";
+type OnboardingStep = "landing" | "welcome" | "physical" | "mental" | "social" | "programs";
 
 const Onboarding = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<OnboardingStep>("welcome");
+  const [step, setStep] = useState<OnboardingStep>("landing");
   const [answers, setAnswers] = useState({
     physical: { goals: "", movement: "", equipment: "", time: "" },
     mental: { stress: 5, sleep: 5 },
     social: { belonging: 5, screenTime: 5 },
   });
 
-  const steps: OnboardingStep[] = ["welcome", "physical", "mental", "social", "programs"];
+  const steps: OnboardingStep[] = ["landing", "welcome", "physical", "mental", "social", "programs"];
   const currentStepIndex = steps.indexOf(step);
   const progressPercent = ((currentStepIndex + 1) / steps.length) * 100;
 
@@ -28,13 +29,82 @@ const Onboarding = () => {
     navigate("/today");
   };
 
+  if (step === "landing") {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-primary/5 to-background">
+        <div className="container max-w-4xl mx-auto px-4 py-12">
+          {/* Logo and Header */}
+          <div className="text-center mb-12">
+            <img src={logo} alt="CG Fit Logo" className="w-32 h-32 mx-auto mb-6" />
+            <h1 className="text-5xl font-bold text-primary mb-3">CG Fit</h1>
+            <p className="text-xl text-muted-foreground">for the mind, body & society</p>
+          </div>
+
+          {/* Vision Section */}
+          <Card className="p-8 mb-8 shadow-lg">
+            <h2 className="text-3xl font-bold mb-6 text-center">Make Health Operational</h2>
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              CG Fit is a revolutionary hybrid health platform that operationalizes your well-being across three essential pillars: 
+              <span className="font-semibold text-foreground"> Physical Health, Mental Health, and Social Health</span>.
+            </p>
+            <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+              Whether you're at home, in the gym, or on the go—CG Fit delivers personalized, measurable health outcomes 
+              through online programs, live classes, and offline partner locations across the GCC.
+            </p>
+            
+            {/* Three Pillars */}
+            <div className="grid md:grid-cols-3 gap-6 mt-8">
+              <div className="text-center p-6 rounded-lg bg-primary/5">
+                <Heart className="w-12 h-12 text-primary mx-auto mb-3" />
+                <h3 className="font-bold text-lg mb-2">Physical Health</h3>
+                <p className="text-sm text-muted-foreground">
+                  Strength training, fat loss, endurance—tailored to your goals and equipment
+                </p>
+              </div>
+              <div className="text-center p-6 rounded-lg bg-secondary/10">
+                <Brain className="w-12 h-12 text-primary mx-auto mb-3" />
+                <h3 className="font-bold text-lg mb-2">Mental Health</h3>
+                <p className="text-sm text-muted-foreground">
+                  Stress management, sleep optimization, breathwork, and mindfulness
+                </p>
+              </div>
+              <div className="text-center p-6 rounded-lg bg-accent/10">
+                <Users className="w-12 h-12 text-primary mx-auto mb-3" />
+                <h3 className="font-bold text-lg mb-2">Social Health</h3>
+                <p className="text-sm text-muted-foreground">
+                  Community connection, belonging, screen-time balance, and purpose
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* CTA Buttons */}
+          <div className="space-y-4 max-w-lg mx-auto">
+            <Button
+              onClick={() => setStep("welcome")}
+              className="w-full h-14 text-lg font-semibold"
+              size="lg"
+            >
+              Start Your Journey
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Begin with a quick 5-minute assessment to personalize your experience
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (step === "welcome") {
     return (
       <div className="min-h-screen bg-gradient-to-b from-primary/10 to-background">
         <div className="container max-w-lg mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
           <div className="w-full space-y-6 text-center">
             <div className="mb-8">
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent mb-3">
+              <img src={logo} alt="CG Fit Logo" className="w-24 h-24 mx-auto mb-4" />
+              <h1 className="text-5xl font-bold text-primary mb-3">
                 CG Fit
               </h1>
               <p className="text-lg text-muted-foreground">for the mind, body & society</p>
@@ -46,9 +116,9 @@ const Onboarding = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-3xl font-bold">Make health operational</h2>
+              <h2 className="text-3xl font-bold">Quick Health Assessment</h2>
               <p className="text-lg text-muted-foreground">
-                Anytime, anywhere. Physical, mental, and social health—all in one place.
+                Let's understand your current health status across mind, body, and society.
               </p>
             </div>
 
@@ -58,10 +128,10 @@ const Onboarding = () => {
                 className="w-full h-14 text-lg font-semibold"
                 size="lg"
               >
-                Get Started
+                Begin Assessment
                 <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
-              <p className="text-sm text-muted-foreground">Takes only 5 minutes</p>
+              <p className="text-sm text-muted-foreground">Phase 1 - Takes only 5 minutes</p>
             </div>
           </div>
         </div>
@@ -155,14 +225,38 @@ const Onboarding = () => {
               </div>
             </div>
 
-            <Button
-              onClick={() => setStep("mental")}
-              disabled={!answers.physical.goals || !answers.physical.time}
-              className="w-full h-12"
-            >
-              Continue
-              <ChevronRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="space-y-3">
+              <Button
+                onClick={() => setStep("mental")}
+                disabled={!answers.physical.goals || !answers.physical.time}
+                className="w-full h-12"
+              >
+                Continue
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Expert consultation booking - Coming soon!")}
+                >
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Consult Expert
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Phase 2 Assessment scheduling - Coming soon!")}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Schedule Phase 2
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground text-center">
+                Want deeper insights? Book an expert consultation or schedule a comprehensive Phase 2 assessment
+              </p>
+            </div>
           </Card>
         </div>
       </div>
@@ -229,10 +323,31 @@ const Onboarding = () => {
               </div>
             </div>
 
-            <Button onClick={() => setStep("social")} className="w-full h-12">
-              Continue
-              <ChevronRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="space-y-3">
+              <Button onClick={() => setStep("social")} className="w-full h-12">
+                Continue
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Expert consultation booking - Coming soon!")}
+                >
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Consult Expert
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Phase 2 Assessment scheduling - Coming soon!")}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Schedule Phase 2
+                </Button>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
@@ -299,10 +414,31 @@ const Onboarding = () => {
               </div>
             </div>
 
-            <Button onClick={() => setStep("programs")} className="w-full h-12">
-              Continue
-              <ChevronRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="space-y-3">
+              <Button onClick={() => setStep("programs")} className="w-full h-12">
+                Continue
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Expert consultation booking - Coming soon!")}
+                >
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Consult Expert
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1 h-12"
+                  onClick={() => window.alert("Phase 2 Assessment scheduling - Coming soon!")}
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Schedule Phase 2
+                </Button>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
